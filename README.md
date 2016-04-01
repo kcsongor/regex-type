@@ -1,5 +1,5 @@
 # regex-type
-Regular expression matching of Haskell types using a nondeterministic finite automata
+Regular expression matching of Haskell types using nondeterministic finite automata
 
 *This is a playground for writing type-level code using TypeFamilies.*
 
