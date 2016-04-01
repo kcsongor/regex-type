@@ -10,6 +10,16 @@ module Regex where
 import Data.Proxy
 import GHC.TypeLits
 
+data RE
+  = Null
+  | forall (c :: *). Term c
+  | Seq RE RE
+  | Alt RE RE
+  | Rep RE
+  | Plus RE
+  | Opt RE
+
+
 data Label
   = forall (c :: *). C c
   | Eps
