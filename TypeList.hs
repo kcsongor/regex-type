@@ -57,6 +57,10 @@ type family Min' (xs :: [k]) min where
 type family Min (xs :: [k]) where
     Min (x ': xs) = Min' xs x
 
+-- This is terribly, terribly slow, when the sorted list is used nested in
+-- another type family.
+-- Might be because GHC doesn't collapse the decision tree before typechecking
+-- it?
 type family Sort (xs :: [k]) where
     Sort '[] = '[]
     Sort (x ': xs) = Sort' (x ': xs) (Min' xs x)
