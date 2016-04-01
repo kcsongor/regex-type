@@ -38,5 +38,5 @@ test_wrong = regex
 # TODO:
 - Improve performance
 - Make it a proper library
-- Try converting the NFA to NDA. I don't know if this will make it faster overall, as I suspect the automaton is reconstructed every time, which means an exponential complexity on each check with the DFA. Maybe an on-demand construction?
+- Try converting the NFA to a DFA. I don't know if this will make it faster overall, as I suspect the automaton is reconstructed every time, which means an exponential complexity on each check with the DFA. Maybe an on-demand construction?
 - Figure out if it's actually useful for anything
