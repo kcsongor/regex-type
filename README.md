@@ -33,6 +33,15 @@ test6 = regex
 -- This doesn't satisfy the regex, and thus a type error occurs
 test_wrong :: Int -> Bool
 test_wrong = regex
+
+
+-- Doesn't typecheck because the list doesn't satisfy the (Int*) regex.
+test_wrong2 :: ('[Int, Int, Int, Int, Char] ~= (Rep Int)) => a -> a
+test_wrong2 = id
+
+-- test7 can only be called with a ~ Int
+test7 :: ('[Int, Int, Int, Int, a] ~= (Rep Int)) => a -> a
+test7 = id
 ```
 
 # TODO:
