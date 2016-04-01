@@ -6,7 +6,7 @@ Regular expression matching of Haskell types using nondeterministic finite autom
 Some examples that work:
 
 ```haskell
--- encode the following regex: (Int | Char | (Bool -> Bool) (String | (Int -> Bool))
+-- encode the following regex: (Int | Char | (Bool -> Bool)) (String | (Int -> Bool))
 regex :: ('[a, b] ~= ((Int :| Char :| (Bool -> Bool)) :> (String :| (Int -> Bool)))) => a -> b
 regex = undefined
 
