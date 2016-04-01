@@ -27,11 +27,15 @@ import Data.Type.Regex.ListUtils
 class input ~= re
 instance (Accepts (MakeNDA re) input ~ 'True) => input ~= re
 
-type a :| b = 'Alt ('Term a) ('Term b)
-type a :> b = 'Seq ('Term a) ('Term b)
-type Rep a  = 'Rep ('Term a)
-type Opt a  = 'Alt ('Term a) 'Null
-type Plus a = 'Seq ('Term a) ('Rep ('Term a))
+type family ToTerm (a :: k) :: RE where
+  ToTerm (a :: *)  = 'Term a
+  ToTerm (a :: RE) = a
+
+type a :| b = 'Alt (ToTerm a) (ToTerm b)
+type a :> b = 'Seq (ToTerm a) (ToTerm b)
+type Rep a  = 'Rep (ToTerm a)
+type Opt a  = 'Alt (ToTerm a) 'Null
+type Plus a = 'Seq (ToTerm a) ('Rep (ToTerm a))
 type Null   = 'Null
 
 -- PRIVATE:
