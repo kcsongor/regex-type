@@ -107,7 +107,7 @@ type family Make (re :: RE) (m :: Nat) (n :: Nat) (k :: Nat) :: ([(Nat, Nat, Lab
     = Make re k (k + 1) (k + 2)
       `Comb1` Make 'Null m k k
       `Comb1` Make 'Null (k + 1) k k
-      `Comb1` Make 'Null (k + 3) n n
+      `Comb1` Make 'Null (k + 1) n n
       `Comb1` Make 'Null m n n
 
 type family BindMake (ma :: ([(Nat, Nat, Label)], Nat)) (mba :: (RE, Nat, Nat)) :: ([(Nat, Nat, Label)], Nat) where
