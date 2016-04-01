@@ -8,13 +8,33 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module Regex where
+module Data.Type.Regex
+  (
+    type (~=)
+  , type (:|)
+  , type (:>)
+  , type Rep
+  , type Opt
+  , type Plus
+  , type Null
+  ) where
 
-import Data.Proxy
 import Data.Type.Bool
 import GHC.TypeLits
-import TypeList
+import Data.Type.Regex.ListUtils
 
+-- Matching
+class input ~= re
+instance (Accepts (MakeNDA re) input ~ 'True) => input ~= re
+
+type a :| b = 'Alt ('Term a) ('Term b)
+type a :> b = 'Seq ('Term a) ('Term b)
+type Rep a  = 'Rep ('Term a)
+type Opt a  = 'Alt ('Term a) 'Null
+type Plus a = 'Seq ('Term a) ('Rep ('Term a))
+type Null   = 'Null
+
+-- PRIVATE:
 data RE
   = Null
   | forall (c :: *). Term c
@@ -33,7 +53,7 @@ type family Accepts (automaton :: (Nat, [Nat], [(Nat, Nat, Label)])) (input :: [
 
 type family Accepts' (state :: Nat) (automaton :: (Nat, [Nat], [(Nat, Nat, Label)])) (input :: [*]) :: Bool where
   Accepts' start a input
-    = (IsTerminal start a && TypeList.Null input)
+    = (IsTerminal start a && IsNull input)
       || AnyAccepted input a (TransitionsFromTo start (AllTransitions a))
 
 type family IsTerminal state automaton :: Bool where
@@ -114,26 +134,10 @@ type family BindMake (ma :: ([(Nat, Nat, Label)], Nat)) (mba :: (RE, Nat, Nat)) 
   BindMake '(ts1, k1) '(re, m, n)
     = Comb2 '(ts1, k1) (Make re m n k1)
 
-type family Comb2 a b where
-  Comb2 '(ts1, k1) '(ts2, k2)
-    = '(ts1 ++ ts2, k2)
-
-type family Comb1 a b where
+type family Comb1 (a :: ([t], k1)) (b :: ([t], k2)) :: ([t], k1) where
   Comb1 '(ts1, k1) '(ts2, k2)
     = '(ts1 ++ ts2, k1)
 
--- Matching
-class input ~= re
-instance (Accepts (MakeNDA re) input ~ 'True) => input ~= re
-
--- Some syntactic sugar
-type family ToTerm (a :: k) :: RE where
-  ToTerm (k :: *) = 'Term k
-  ToTerm a        = a
-
-type a :| b = 'Alt (ToTerm a) (ToTerm b)
-type a :> b = 'Seq (ToTerm a) (ToTerm b)
-type Rep a  = 'Rep (ToTerm a)
-type Opt a  = 'Alt (ToTerm a) 'Null
-type Plus a = 'Seq (ToTerm a) ('Rep (ToTerm a))
-type Null   = 'Null
+type family Comb2 (a :: ([t], k1)) (b :: ([t], k2)) :: ([t], k2) where
+  Comb2 '(ts1, k1) '(ts2, k2)
+    = '(ts1 ++ ts2, k2)
