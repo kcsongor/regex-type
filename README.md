@@ -3,7 +3,7 @@ Regular expression matching of Haskell types using nondeterministic finite autom
 
 *This is a playground for writing type-level code using TypeFamilies.*
 
-Available on [hackage](http://hackage.haskell.org/package/printf-safe)
+Available on [hackage](http://hackage.haskell.org/package/regex-type)
 
 Some examples that work:
 
