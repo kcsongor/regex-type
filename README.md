@@ -3,6 +3,8 @@ Regular expression matching of Haskell types using nondeterministic finite autom
 
 *This is a playground for writing type-level code using TypeFamilies.*
 
+Available on [hackage](http://hackage.haskell.org/package/printf-safe)
+
 Some examples that work:
 
 ```haskell
@@ -46,6 +48,5 @@ test7 = id
 
 # TODO:
 - Improve performance
-- Make it a proper library
 - Try converting the NFA to a DFA. I don't know if this will make it faster overall, as I suspect the automaton is reconstructed every time, which means an exponential complexity on each check with the DFA. Maybe an on-demand construction?
 - Figure out if it's actually useful for anything
